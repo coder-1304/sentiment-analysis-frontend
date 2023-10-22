@@ -1,0 +1,183 @@
+1. "/register"  method="post"
+    request body:
+    {
+        fullName: "",
+        email:"",
+        password:"",
+        confirmPassword:""
+    }
+    response body:
+    -- if success:
+    {
+        success: true
+    }
+    -- else:
+    {
+        success: false,
+        message: "User Already Exists/.."
+    }
+[OTP will be sent to the user's email]
+
+2. "/verifyOTP"  method="post"
+    request body:
+    {
+        email: "",
+        otp: 2345
+    }
+    response body:
+    -- success
+    {
+        success: true,
+        JWT: "jwt_token_here(will be stored in cookies)"
+    }
+    -- failed
+    {
+        success: false,
+        message: 'Invalid OTP' or 'Email does not exist' or ...,
+    }
+
+
+3. "login"   method="post"
+    request body:
+    {
+        email: "",
+        password: ""
+    }
+    response body:
+    -- success
+    {
+        success: true,
+        JWT: ""
+    }
+    -- failed
+    {
+        success: false,
+        message: "user does not exist or anything"
+    }
+
+
+4. "/predict"   method="post"  [Auth: jwt token will be in bearer token]
+    request body:
+    {
+        text: ""
+    }
+    // Here we'll send request to our model api from backend and send to to frontend
+    // After getting predicted result, it will be stored in prediction table with a randomly generated ID
+    response body:
+    -- success
+    {
+        success: true,
+        sentiment: "joy/sadness/....",
+        ID: "randomly generated unique id for each prediction and which is stored in ID of prediction table"
+    }
+    -- failed
+    {
+        success: false,
+        message: "...."
+    }
+
+
+5. "/correctFeedback"   method="post"  [Auth: jwt token will be in bearer token]
+    request body:
+    -- if correct feedback
+    {
+        ID: "ID of the prediction which is sent to frontend in predict api",
+        correctFeedback: true   (means our prediction is correct as per user)
+    }
+    -- else
+    {
+        ID: "",
+        correctFeedback: false,
+        feedback: "joy/sadness/...."
+    }
+    // Here we'll send request to our model api from backend and send to to frontend
+    response body:
+    -- success
+    {
+        success: true,
+    }
+    -- failed
+    {
+        success: false,
+        message: "...."
+    }      
+
+
+
+
+    // fetch("http://127.0.0.1:8080/prediction", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // })
+    //   .then((response) => response.json())
+    //   .then((res) => {
+    //     console.log(res);
+    //     setPrediction(res.predicted_emotion);
+    //     switch (res.predicted_emotion) {
+    //       case "neutral":
+    //         color = "gray";
+    //         result = "Neutral 😐";
+    //         image = neutral;
+    //         break;
+    //       case "joy":
+    //         color = "rgb(105, 202, 105)";
+    //         result = "Joy 😄";
+    //         image = joy;
+    //         bgCol = "rgb(232, 255, 232)";
+    //         break;
+    //       case "sadness":
+    //         result = "Sadness 😢";
+    //         image = sadness;
+    //         color = "rgb(105, 139, 202)";
+    //         bgCol = "rgb(222, 231, 255)";
+    //         break;
+    //       case "fear":
+    //         result = "Fear 😨";
+    //         image = fear;
+    //         color = "rgb(171, 157, 186)";
+    //         bgCol = "rgb(33, 33, 33)";
+    //         break;
+    //       case "surprise":
+    //         result = "Surprise 😲";
+    //         image = surprise;
+    //         color = "rgb(205, 205, 0)";
+    //         bgCol = "rgb(225, 225, 165)";
+    //         break;
+    //       case "anger":
+    //         result = "Anger 😡";
+    //         image = anger;
+    //         color = "rgb(202, 105, 105)";
+    //         bgCol = "rgb(244, 194, 194)";
+    //         break;
+    //       case "shame":
+    //         result = "Shame 😳";
+    //         image = shame;
+    //         color = "rgb(255, 121, 143)";
+    //         bgCol = "rgb(255, 234, 234)";
+    //         break;
+    //       case "disgust":
+    //         result = "Disgust 🤢";
+    //         image = disgust;
+    //         bgCol = "rgb(187, 249, 255)";
+    //         color = "rgb(0, 223, 186)";
+    //         break;
+    //       default:
+    //         resultText.style.color = "black"; // Default color for other sentiments
+    //     }
+    //     setMemeImage(image);
+    //     // memeImage.src = `./images/${res.predicted_emotion}.jpg`;
+    //     setResultText(result);
+    //     // resultText.textContent =  result;
+    //     setTextColor(color);
+    //     setShowFeedback(true);
+    //     setLoading(false);
+    //     // resultText.style.color = color;
+    //     // document.body.style.backgroundColor = bgCol;
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //     resultText.textContent = "Error occurred.";
+    //   });
